@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Paciente {
+  id        String   @id @default(cuid())
+  nome      String
+  cpf       String?  @unique
+  rg        String?
+  telefone  String?
+  endereco  String?
+  nascimento DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  exames    Exame[]
+  
+  @@map("pacientes")
+}
+
+model Exame {
+  id          String   @id @default(cuid())
+  tipo        TipoExame
+  resultado   String?
+  observacoes String?
+  dataExame   DateTime @default(now())
+  dataResultado DateTime?
+  status      StatusExame @default(PENDENTE)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  pacienteId  String
+  paciente    Paciente @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+  
+  @@map("exames")
+}
+
+enum TipoExame {
+  BETA_HCG
+  DENGUE
+  CHIKUNGUNYA
+  ZIKA
+  COVID
+  PPD
+  INGRAM
+  CHAGAS
+  BACILOSCOPIA_ESCARRO
+}
+
+enum StatusExame {
+  PENDENTE
+  PROCESSANDO
+  CONCLUIDO
+  CANCELADO
+}
