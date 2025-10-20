@@ -7,7 +7,31 @@ import {
   AlertCircle
 } from 'lucide-react'
 
-export default function Home() {
+async function getEstatisticas() {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/estatisticas`, {
+      cache: 'no-store'
+    })
+    
+    if (!response.ok) {
+      throw new Error('Erro ao buscar estatísticas')
+    }
+    
+    return await response.json()
+  } catch (error) {
+    console.error('Erro ao buscar estatísticas:', error)
+    return {
+      examesHoje: 0,
+      totalPacientes: 0,
+      examesPendentes: 0,
+      examesEsteMes: 0,
+      examesRecentes: []
+    }
+  }
+}
+
+export default async function Home() {
+  const estatisticas = await getEstatisticas()
   return (
     <AppLayout>
       <div className="space-y-8">
@@ -27,7 +51,7 @@ export default function Home() {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Exames Hoje</p>
-                <p className="text-2xl font-bold text-gray-900">12</p>
+                <p className="text-2xl font-bold text-gray-900">{estatisticas.examesHoje}</p>
               </div>
             </div>
           </div>
@@ -39,7 +63,7 @@ export default function Home() {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Pacientes</p>
-                <p className="text-2xl font-bold text-gray-900">248</p>
+                <p className="text-2xl font-bold text-gray-900">{estatisticas.totalPacientes}</p>
               </div>
             </div>
           </div>
@@ -51,7 +75,7 @@ export default function Home() {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Pendentes</p>
-                <p className="text-2xl font-bold text-gray-900">8</p>
+                <p className="text-2xl font-bold text-gray-900">{estatisticas.examesPendentes}</p>
               </div>
             </div>
           </div>
@@ -63,7 +87,7 @@ export default function Home() {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Este Mês</p>
-                <p className="text-2xl font-bold text-gray-900">156</p>
+                <p className="text-2xl font-bold text-gray-900">{estatisticas.examesEsteMes}</p>
               </div>
             </div>
           </div>
@@ -76,18 +100,18 @@ export default function Home() {
               Ações Rápidas
             </h2>
             <div className="space-y-3">
-              <button className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+              <a href="/exames/novo" className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                 <div className="flex items-center">
                   <TestTube className="h-5 w-5 text-blue-600 mr-3" />
                   <span className="font-medium text-gray-900">Novo Exame</span>
                 </div>
-              </button>
-              <button className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+              </a>
+              <a href="/pacientes/novo" className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                 <div className="flex items-center">
                   <Users className="h-5 w-5 text-green-600 mr-3" />
                   <span className="font-medium text-gray-900">Cadastrar Paciente</span>
                 </div>
-              </button>
+              </a>
               <button className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                 <div className="flex items-center">
                   <FileText className="h-5 w-5 text-purple-600 mr-3" />
@@ -102,33 +126,28 @@ export default function Home() {
               Exames Recentes
             </h2>
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div>
-                  <p className="font-medium text-gray-900">Beta HCG</p>
-                  <p className="text-sm text-gray-600">João Silva</p>
+              {estatisticas.examesRecentes.map((exame: any) => (
+                <div key={exame.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div>
+                    <p className="font-medium text-gray-900">{exame.tipo.replace('_', ' ')}</p>
+                    <p className="text-sm text-gray-600">{exame.paciente.nome}</p>
+                  </div>
+                  <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                    exame.status === 'CONCLUIDO' ? 'bg-green-100 text-green-800' :
+                    exame.status === 'PROCESSANDO' ? 'bg-yellow-100 text-yellow-800' :
+                    exame.status === 'PENDENTE' ? 'bg-blue-100 text-blue-800' :
+                    'bg-gray-100 text-gray-800'
+                  }`}>
+                    {exame.status === 'CONCLUIDO' ? 'Concluído' :
+                     exame.status === 'PROCESSANDO' ? 'Processando' :
+                     exame.status === 'PENDENTE' ? 'Pendente' :
+                     'Cancelado'}
+                  </span>
                 </div>
-                <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
-                  Concluído
-                </span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div>
-                  <p className="font-medium text-gray-900">COVID-19</p>
-                  <p className="text-sm text-gray-600">Maria Santos</p>
-                </div>
-                <span className="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
-                  Processando
-                </span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div>
-                  <p className="font-medium text-gray-900">Dengue</p>
-                  <p className="text-sm text-gray-600">Pedro Costa</p>
-                </div>
-                <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
-                  Pendente
-                </span>
-              </div>
+              ))}
+              {estatisticas.examesRecentes.length === 0 && (
+                <p className="text-gray-500 text-center py-4">Nenhum exame encontrado</p>
+              )}
             </div>
           </div>
         </div>
