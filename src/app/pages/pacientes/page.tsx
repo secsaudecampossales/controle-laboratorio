@@ -1,4 +1,4 @@
-import AppLayout from '../components/AppLayout'
+import AppLayout from '../../components/AppLayout'
 import { Plus, Search, Edit, Trash2, Eye } from 'lucide-react'
 
 async function getPacientes() {
@@ -30,7 +30,7 @@ export default async function PacientesPage() {
               Gerenciar cadastro de pacientes do laboratório
             </p>
           </div>
-          <a href="/pacientes/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+          <a href="/pages/pacientes/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
             <Plus className="h-5 w-5 mr-2" />
             Novo Paciente
           </a>
@@ -116,7 +116,7 @@ export default async function PacientesPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
-                        <a href={`/pacientes/${paciente.id}`} className="text-blue-600 hover:text-blue-900">
+                        <a href={`/pages/pacientes/${paciente.id}`} className="text-blue-600 hover:text-blue-900">
                           <Eye className="h-4 w-4" />
                         </a>
                         <button className="text-gray-600 hover:text-gray-900">

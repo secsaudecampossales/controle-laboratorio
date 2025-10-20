@@ -12,10 +12,10 @@ import {
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: Home },
-  { name: 'Pacientes', href: '/pacientes', icon: Users },
-  { name: 'Exames', href: '/exames', icon: TestTube },
-  { name: 'Relatórios', href: '/relatorios', icon: FileText },
-  { name: 'Estatísticas', href: '/estatisticas', icon: BarChart3 },
+  { name: 'Pacientes', href: '/pages/pacientes', icon: Users },
+  { name: 'Exames', href: '/pages/exames', icon: TestTube },
+  { name: 'Relatórios', href: '/pages/relatorios', icon: FileText },
+  { name: 'Estatísticas', href: '/pages/estatisticas', icon: BarChart3 },
 ]
 
 export default function Navigation() {

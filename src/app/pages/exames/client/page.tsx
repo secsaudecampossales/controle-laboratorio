@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import AppLayout from '../../components/AppLayout'
-import StatusActionButtons from '../../components/StatusActionButtons'
+import AppLayout from '../../../components/AppLayout'
+import StatusActionButtons from '../../../components/StatusActionButtons'
 import { Plus, Search, Filter, Eye, CheckCircle, Clock, AlertCircle } from 'lucide-react'
 
 interface Exame {
@@ -79,7 +79,7 @@ export default function ExamesPageClient() {
               Gerenciar todos os exames realizados no laboratório
             </p>
           </div>
-          <a href="/exames/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+          <a href="/pages/exames/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
             <Plus className="h-5 w-5 mr-2" />
             Novo Exame
           </a>
@@ -193,13 +193,17 @@ export default function ExamesPageClient() {
                       {exame.resultado || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center justify-start space-x-3">
                         <StatusActionButtons 
                           exameId={exame.id} 
                           currentStatus={exame.status}
                           onStatusChange={(newStatus) => handleStatusChange(exame.id, newStatus)}
                         />
-                        <a href={`/exames/${exame.id}`} className="text-blue-600 hover:text-blue-900">
+                        <a 
+                          href={`/pages/exames/${exame.id}`} 
+                          className="p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors duration-200"
+                          title="Ver detalhes"
+                        >
                           <Eye className="h-4 w-4" />
                         </a>
                       </div>
