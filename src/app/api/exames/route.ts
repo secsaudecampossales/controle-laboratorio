@@ -1,3 +1,4 @@
+import { Prisma, TipoExame, StatusExame } from '@prisma/client'
 import { prisma } from '@/app/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -73,20 +74,20 @@ export async function GET(request: NextRequest) {
       
       if (prismaModule?.prisma) {
         console.log('Tentando usar Prisma para buscar exames...')
-        
-        const where: any = {}
-        if (tipo) where.tipo = tipo
-        if (status) where.status = status
+
+        const where = {} as Prisma.ExameWhereInput
+        if (tipo) where.tipo = tipo as unknown as TipoExame
+        if (status) where.status = status as unknown as StatusExame
         if (pacienteId) where.pacienteId = pacienteId
 
         exames = await prismaModule.prisma.exame.findMany({
           where,
           include: {
-            paciente: true
+            paciente: true,
           },
           orderBy: {
-            dataExame: 'desc'
-          }
+            dataExame: 'desc',
+          },
         })
         console.log('Exames encontrados com Prisma:', exames.length)
       } else {

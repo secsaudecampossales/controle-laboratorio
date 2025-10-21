@@ -1,7 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+type ExamePorTipo = { tipo: string; quantidade: number; percentual: number }
+type ExamePorStatus = { status: string; quantidade: number; percentual: number }
+type ExamePorSemana = { semana: string; quantidade: number }
+
+type RelatorioData = {
+  totalExames: number
+  examesPorTipo: ExamePorTipo[]
+  examesPorStatus: ExamePorStatus[]
+  examesPorSemana: ExamePorSemana[]
+}
+
 // Função para gerar PDF simples sem dependências externas
-function generateSimplePDF(data: any, mes: number, ano: number) {
+function generateSimplePDF(data: RelatorioData, mes: number, ano: number) {
   // Criar conteúdo HTML simples que pode ser convertido para PDF
   const htmlContent = `
     <!DOCTYPE html>
@@ -45,7 +56,7 @@ function generateSimplePDF(data: any, mes: number, ano: number) {
             </tr>
           </thead>
           <tbody>
-            ${data.examesPorTipo.map((item: any) => `
+            ${data.examesPorTipo.map((item) => `
               <tr>
                 <td>${item.tipo.replace('_', ' ')}</td>
                 <td>${item.quantidade}</td>
@@ -67,7 +78,7 @@ function generateSimplePDF(data: any, mes: number, ano: number) {
             </tr>
           </thead>
           <tbody>
-            ${data.examesPorStatus.map((item: any) => `
+            ${data.examesPorStatus.map((item) => `
               <tr>
                 <td>${item.status === 'CONCLUIDO' ? 'Concluído' :
                      item.status === 'PROCESSANDO' ? 'Processando' :
@@ -90,7 +101,7 @@ function generateSimplePDF(data: any, mes: number, ano: number) {
             </tr>
           </thead>
           <tbody>
-            ${data.examesPorSemana.map((item: any) => `
+            ${data.examesPorSemana.map((item) => `
               <tr>
                 <td>${item.semana}</td>
                 <td>${item.quantidade}</td>

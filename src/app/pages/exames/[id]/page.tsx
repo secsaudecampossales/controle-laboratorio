@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import AppLayout from '../../../components/AppLayout'
 import { ArrowLeft, Save, TestTube, User, Calendar, CheckCircle, Clock, AlertCircle, XCircle, Play, Pause } from 'lucide-react'
 
@@ -27,8 +27,9 @@ const STATUS_OPTIONS = [
   { value: 'CANCELADO', label: 'Cancelado', icon: XCircle, color: 'text-red-600', bgColor: 'bg-red-100' }
 ]
 
-export default function ExameDetalhesPage({ params }: { params: { id: string } }) {
+export default function ExameDetalhesPage() {
   const router = useRouter()
+  const params = useParams()
   const [loading, setLoading] = useState(false)
   const [exame, setExame] = useState<Exame | null>(null)
   const [formData, setFormData] = useState({

@@ -1,4 +1,5 @@
 import AppLayout from './components/AppLayout'
+import Link from 'next/link'
 import { 
   TestTube, 
   Users, 
@@ -6,6 +7,15 @@ import {
   TrendingUp,
   AlertCircle
 } from 'lucide-react'
+
+type RecentExame = {
+  id: string
+  tipo: string
+  status: string
+  paciente: {
+    nome: string
+  }
+}
 
 async function getEstatisticas() {
   try {
@@ -101,7 +111,7 @@ export default async function Home() {
               Ações Rápidas
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <a 
+              <Link 
                 href="/pages/exames/novo" 
                 className="group p-4 rounded-lg border-2 border-blue-200 bg-blue-50 hover:bg-blue-100 hover:border-blue-300 transition-all duration-200 hover:scale-105"
               >
@@ -112,9 +122,9 @@ export default async function Home() {
                   <span className="font-semibold text-blue-900">Novo Exame</span>
                   <span className="text-xs text-blue-600 mt-1">Cadastrar exame</span>
                 </div>
-              </a>
+              </Link>
               
-              <a 
+              <Link 
                 href="/pages/pacientes/novo" 
                 className="group p-4 rounded-lg border-2 border-green-200 bg-green-50 hover:bg-green-100 hover:border-green-300 transition-all duration-200 hover:scale-105"
               >
@@ -125,9 +135,9 @@ export default async function Home() {
                   <span className="font-semibold text-green-900">Novo Paciente</span>
                   <span className="text-xs text-green-600 mt-1">Cadastrar paciente</span>
                 </div>
-              </a>
+              </Link>
               
-              <a 
+              <Link 
                 href="/pages/relatorios" 
                 className="group p-4 rounded-lg border-2 border-purple-200 bg-purple-50 hover:bg-purple-100 hover:border-purple-300 transition-all duration-200 hover:scale-105"
               >
@@ -138,9 +148,9 @@ export default async function Home() {
                   <span className="font-semibold text-purple-900">Relatórios</span>
                   <span className="text-xs text-purple-600 mt-1">Gerar relatórios</span>
                 </div>
-              </a>
+              </Link>
               
-              <a 
+              <Link 
                 href="/pages/exames" 
                 className="group p-4 rounded-lg border-2 border-orange-200 bg-orange-50 hover:bg-orange-100 hover:border-orange-300 transition-all duration-200 hover:scale-105"
               >
@@ -151,7 +161,7 @@ export default async function Home() {
                   <span className="font-semibold text-orange-900">Ver Exames</span>
                   <span className="text-xs text-orange-600 mt-1">Listar todos</span>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -160,7 +170,7 @@ export default async function Home() {
               Exames Recentes
             </h2>
             <div className="space-y-3">
-              {estatisticas.examesRecentes.map((exame: any) => (
+              {estatisticas.examesRecentes.map((exame: RecentExame) => (
                 <div key={exame.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
                     <p className="font-medium text-gray-900">{exame.tipo.replace('_', ' ')}</p>

@@ -1,7 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
+import { StatusExame } from '@prisma/client'
 
 // Função para conectar ao banco sem Prisma (fallback)
-async function updateExameDirect(id: string, data: any) {
+type UpdateExameData = {
+  resultado?: string | null
+  observacoes?: string | null
+  status?: string
+  dataResultado?: string | null
+}
+
+async function updateExameDirect(id: string, data: UpdateExameData) {
   console.log('Atualizando exame diretamente:', { id, data })
   
   // Simular uma atualização bem-sucedida para teste
@@ -31,12 +39,11 @@ async function updateExameDirect(id: string, data: any) {
   }
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: Request) {
   try {
-    const id = params.id
+    const url = new URL(request.url)
+    const segments = url.pathname.split('/').filter(Boolean)
+    const id = segments[segments.length - 1]
     
     console.log('PUT request recebida:', { id, url: request.url })
     
@@ -51,7 +58,7 @@ export async function PUT(
     const body = await request.json()
     console.log('Body da requisição:', body)
     
-    const { resultado, observacoes, status, dataResultado } = body
+  const { resultado, observacoes, status, dataResultado } = body as UpdateExameData
 
     // Tentar usar Prisma primeiro, mas com fallback robusto
     let exame
@@ -67,8 +74,8 @@ export async function PUT(
           data: {
             resultado,
             observacoes,
-            status,
-            dataResultado: dataResultado ? new Date(dataResultado) : null
+            status: status as unknown as StatusExame,
+            dataResultado: dataResultado ? new Date(dataResultado).toISOString() : null
           },
           include: {
             paciente: true
@@ -86,7 +93,7 @@ export async function PUT(
         resultado,
         observacoes,
         status,
-        dataResultado: dataResultado ? new Date(dataResultado) : null
+        dataResultado: dataResultado ? new Date(dataResultado).toISOString() : null
       })
       console.log('Exame atualizado com fallback:', exame)
     }
@@ -104,12 +111,11 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: Request) {
   try {
-    const id = params.id
+    const url = new URL(request.url)
+    const segments = url.pathname.split('/').filter(Boolean)
+    const id = segments[segments.length - 1]
 
     if (!id) {
       return NextResponse.json(

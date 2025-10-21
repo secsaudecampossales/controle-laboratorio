@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import AppLayout from '../../../components/AppLayout'
 import { ArrowLeft, Edit, User, Phone, MapPin, Calendar, TestTube } from 'lucide-react'
 
@@ -23,13 +23,14 @@ interface Paciente {
   }>
 }
 
-export default function PacienteDetalhesPage({ params }: { params: { id: string } }) {
+export default function PacienteDetalhesPage() {
   const router = useRouter()
+  const params = useParams()
   const [paciente, setPaciente] = useState<Paciente | null>(null)
 
   useEffect(() => {
     fetchPaciente()
-  }, [params.id])
+  }, [params?.id])
 
   const fetchPaciente = async () => {
     try {

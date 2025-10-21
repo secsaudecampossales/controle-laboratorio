@@ -1,7 +1,8 @@
-'use client'
+ 'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import AppLayout from '../../../components/AppLayout'
 import { ArrowLeft, Save, TestTube, User } from 'lucide-react'
 
@@ -133,7 +134,7 @@ export default function NovoExamePage() {
                 </div>
                 {pacientes.length === 0 && (
                   <p className="text-sm text-gray-500 mt-2">
-                    Nenhum paciente cadastrado. <a href="/pages/pacientes/novo" className="text-blue-600 hover:underline">Cadastrar paciente</a>
+                    Nenhum paciente cadastrado. <Link href="/pages/pacientes/novo" className="text-blue-600 hover:underline">Cadastrar paciente</Link>
                   </p>
                 )}
               </div>
@@ -184,7 +185,7 @@ export default function NovoExamePage() {
             <div className="bg-blue-50 p-4 rounded-lg">
               <h3 className="text-sm font-medium text-blue-900 mb-2">Informações sobre o exame</h3>
               <ul className="text-sm text-blue-800 space-y-1">
-                <li>• O exame será criado com status "Pendente"</li>
+                <li>• O exame será criado com status &quot;Pendente&quot;</li>
                 <li>• A data do exame será registrada automaticamente</li>
                 <li>• Você poderá atualizar o resultado posteriormente</li>
                 <li>• O status será alterado conforme o progresso do exame</li>

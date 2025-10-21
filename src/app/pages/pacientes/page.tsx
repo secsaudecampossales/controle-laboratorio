@@ -1,5 +1,14 @@
 import AppLayout from '../../components/AppLayout'
+import Link from 'next/link'
 import { Plus, Search, Edit, Trash2, Eye } from 'lucide-react'
+
+type Paciente = {
+  id: string
+  nome: string
+  cpf?: string | null
+  telefone?: string | null
+  exames?: { dataExame: string }[]
+}
 
 async function getPacientes() {
   try {
@@ -30,10 +39,10 @@ export default async function PacientesPage() {
               Gerenciar cadastro de pacientes do laboratório
             </p>
           </div>
-          <a href="/pages/pacientes/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+          <Link href="/pages/pacientes/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
             <Plus className="h-5 w-5 mr-2" />
             Novo Paciente
-          </a>
+          </Link>
         </div>
 
         {/* Filtros e busca */}
@@ -89,7 +98,7 @@ export default async function PacientesPage() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {pacientes.map((paciente: any) => (
+                {pacientes.map((paciente: Paciente) => (
                   <tr key={paciente.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
