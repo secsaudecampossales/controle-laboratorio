@@ -39,7 +39,7 @@ export default function NovoPacientePage() {
       })
 
       if (response.ok) {
-        router.push('/pacientes')
+        router.push('/pages/pacientes')
         router.refresh()
       } else {
         const error = await response.json()
