@@ -190,7 +190,7 @@ export default function RelatoriosPage() {
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex">
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <FileText className="h-5 w-5 text-red-400" />
               </div>
               <div className="ml-3">

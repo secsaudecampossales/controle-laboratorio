@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import AppLayout from '../../components/AppLayout'
+import AppLayout from '../../../components/AppLayout'
 import { ArrowLeft, Save, User } from 'lucide-react'
 
 export default function NovoPacientePage() {

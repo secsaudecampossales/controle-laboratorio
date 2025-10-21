@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import AppLayout from '../../components/AppLayout'
+import AppLayout from '../../../components/AppLayout'
 import { ArrowLeft, Edit, User, Phone, MapPin, Calendar, TestTube } from 'lucide-react'
 
 interface Paciente {
