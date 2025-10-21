@@ -12,14 +12,16 @@ type Paciente = {
 
 async function getPacientes() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/pacientes`, {
-      cache: 'no-store'
-    })
-    
+    // Build an absolute URL for server-side fetch environments.
+    // Prefer NEXT_PUBLIC_BASE_URL if set; otherwise use localhost for dev.
+    const base = process.env.NEXT_PUBLIC_BASE_URL || (process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : 'http://localhost:3000')
+    const url = new URL('/api/pacientes', base).toString()
+    const response = await fetch(url, { cache: 'no-store' })
+
     if (!response.ok) {
       throw new Error('Erro ao buscar pacientes')
     }
-    
+
     return await response.json()
   } catch (error) {
     console.error('Erro ao buscar pacientes:', error)
@@ -125,9 +127,9 @@ export default async function PacientesPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
-                        <a href={`/pages/pacientes/${paciente.id}`} className="text-blue-600 hover:text-blue-900">
+                        <Link href={`/pages/pacientes/${paciente.id}`} className="text-blue-600 hover:text-blue-900">
                           <Eye className="h-4 w-4" />
-                        </a>
+                        </Link>
                         <button className="text-gray-600 hover:text-gray-900">
                           <Edit className="h-4 w-4" />
                         </button>
