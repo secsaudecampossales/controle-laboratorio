@@ -11,18 +11,48 @@ interface StatusButtonProps {
 
 const STATUS_ACTIONS = {
   PENDENTE: [
-    { status: 'PROCESSANDO', label: 'Processar', icon: Play, color: 'text-yellow-600 hover:bg-yellow-50' },
-    { status: 'CANCELADO', label: 'Cancelar', icon: XCircle, color: 'text-red-600 hover:bg-red-50' }
+    { 
+      status: 'PROCESSANDO', 
+      label: 'Processar', 
+      icon: Play, 
+      color: 'text-yellow-700 bg-yellow-100 hover:bg-yellow-200 border-yellow-300' 
+    },
+    { 
+      status: 'CANCELADO', 
+      label: 'Cancelar', 
+      icon: XCircle, 
+      color: 'text-red-700 bg-red-100 hover:bg-red-200 border-red-300' 
+    }
   ],
   PROCESSANDO: [
-    { status: 'CONCLUIDO', label: 'Concluir', icon: CheckCircle, color: 'text-green-600 hover:bg-green-50' },
-    { status: 'CANCELADO', label: 'Cancelar', icon: XCircle, color: 'text-red-600 hover:bg-red-50' }
+    { 
+      status: 'CONCLUIDO', 
+      label: 'Concluir', 
+      icon: CheckCircle, 
+      color: 'text-green-700 bg-green-100 hover:bg-green-200 border-green-300' 
+    },
+    { 
+      status: 'CANCELADO', 
+      label: 'Cancelar', 
+      icon: XCircle, 
+      color: 'text-red-700 bg-red-100 hover:bg-red-200 border-red-300' 
+    }
   ],
   CONCLUIDO: [
-    { status: 'PROCESSANDO', label: 'Reabrir', icon: Play, color: 'text-yellow-600 hover:bg-yellow-50' }
+    { 
+      status: 'PROCESSANDO', 
+      label: 'Reabrir', 
+      icon: Play, 
+      color: 'text-yellow-700 bg-yellow-100 hover:bg-yellow-200 border-yellow-300' 
+    }
   ],
   CANCELADO: [
-    { status: 'PENDENTE', label: 'Reativar', icon: Clock, color: 'text-blue-600 hover:bg-blue-50' }
+    { 
+      status: 'PENDENTE', 
+      label: 'Reativar', 
+      icon: Clock, 
+      color: 'text-blue-700 bg-blue-100 hover:bg-blue-200 border-blue-300' 
+    }
   ]
 }
 
@@ -81,7 +111,7 @@ export default function StatusActionButtons({ exameId, currentStatus, onStatusCh
   }
 
   return (
-    <div className="flex space-x-1">
+    <div className="flex items-center space-x-1">
       {availableActions.map((action) => {
         const IconComponent = action.icon
         const isLoading = loading === action.status
@@ -91,7 +121,15 @@ export default function StatusActionButtons({ exameId, currentStatus, onStatusCh
             key={action.status}
             onClick={() => handleStatusChange(action.status)}
             disabled={isLoading}
-            className={`p-1 rounded transition-colors disabled:opacity-50 ${action.color}`}
+            className={`
+              p-2 rounded-md border 
+              transition-all duration-200 ease-in-out
+              disabled:opacity-50 disabled:cursor-not-allowed
+              hover:scale-105 active:scale-95
+              shadow-sm hover:shadow-md
+              ${action.color}
+              ${isLoading ? 'cursor-wait' : 'cursor-pointer'}
+            `}
             title={action.label}
           >
             {isLoading ? (

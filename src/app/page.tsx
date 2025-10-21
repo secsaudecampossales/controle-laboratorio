@@ -96,28 +96,62 @@ export default async function Home() {
         {/* Ações rápidas */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            <h2 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+              <TrendingUp className="h-5 w-5 mr-2 text-blue-600" />
               Ações Rápidas
             </h2>
-            <div className="space-y-3">
-              <a href="/exames/novo" className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-                <div className="flex items-center">
-                  <TestTube className="h-5 w-5 text-blue-600 mr-3" />
-                  <span className="font-medium text-gray-900">Novo Exame</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <a 
+                href="/pages/exames/novo" 
+                className="group p-4 rounded-lg border-2 border-blue-200 bg-blue-50 hover:bg-blue-100 hover:border-blue-300 transition-all duration-200 hover:scale-105"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="p-3 bg-blue-100 rounded-full mb-3 group-hover:bg-blue-200 transition-colors">
+                    <TestTube className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <span className="font-semibold text-blue-900">Novo Exame</span>
+                  <span className="text-xs text-blue-600 mt-1">Cadastrar exame</span>
                 </div>
               </a>
-              <a href="/pacientes/novo" className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-                <div className="flex items-center">
-                  <Users className="h-5 w-5 text-green-600 mr-3" />
-                  <span className="font-medium text-gray-900">Cadastrar Paciente</span>
+              
+              <a 
+                href="/pages/pacientes/novo" 
+                className="group p-4 rounded-lg border-2 border-green-200 bg-green-50 hover:bg-green-100 hover:border-green-300 transition-all duration-200 hover:scale-105"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="p-3 bg-green-100 rounded-full mb-3 group-hover:bg-green-200 transition-colors">
+                    <Users className="h-6 w-6 text-green-600" />
+                  </div>
+                  <span className="font-semibold text-green-900">Novo Paciente</span>
+                  <span className="text-xs text-green-600 mt-1">Cadastrar paciente</span>
                 </div>
               </a>
-              <button className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-                <div className="flex items-center">
-                  <FileText className="h-5 w-5 text-purple-600 mr-3" />
-                  <span className="font-medium text-gray-900">Gerar Relatório</span>
+              
+              <a 
+                href="/pages/relatorios" 
+                className="group p-4 rounded-lg border-2 border-purple-200 bg-purple-50 hover:bg-purple-100 hover:border-purple-300 transition-all duration-200 hover:scale-105"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="p-3 bg-purple-100 rounded-full mb-3 group-hover:bg-purple-200 transition-colors">
+                    <FileText className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <span className="font-semibold text-purple-900">Relatórios</span>
+                  <span className="text-xs text-purple-600 mt-1">Gerar relatórios</span>
                 </div>
-              </button>
+              </a>
+              
+              <a 
+                href="/pages/exames" 
+                className="group p-4 rounded-lg border-2 border-orange-200 bg-orange-50 hover:bg-orange-100 hover:border-orange-300 transition-all duration-200 hover:scale-105"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="p-3 bg-orange-100 rounded-full mb-3 group-hover:bg-orange-200 transition-colors">
+                    <AlertCircle className="h-6 w-6 text-orange-600" />
+                  </div>
+                  <span className="font-semibold text-orange-900">Ver Exames</span>
+                  <span className="text-xs text-orange-600 mt-1">Listar todos</span>
+                </div>
+              </a>
             </div>
           </div>
 

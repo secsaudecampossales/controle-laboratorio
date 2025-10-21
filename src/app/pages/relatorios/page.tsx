@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import AppLayout from '../components/AppLayout'
+import AppLayout from '../../components/AppLayout'
 import { Download, Calendar, FileText, BarChart3, TrendingUp } from 'lucide-react'
 
 interface RelatorioData {

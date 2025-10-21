@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import AppLayout from '../../components/AppLayout'
+import AppLayout from '../../../components/AppLayout'
 import { ArrowLeft, Save, TestTube, User, Calendar, CheckCircle, Clock, AlertCircle, XCircle, Play, Pause } from 'lucide-react'
 
 interface Exame {

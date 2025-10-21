@@ -247,7 +247,7 @@ export default function PacienteDetalhesPage({ params }: { params: { id: string 
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <a 
-                          href={`/exames/${exame.id}`}
+                          href={`/pages/exames/${exame.id}`}
                           className="text-blue-600 hover:text-blue-900"
                         >
                           Ver detalhes
@@ -263,7 +263,7 @@ export default function PacienteDetalhesPage({ params }: { params: { id: string 
               <TestTube className="h-12 w-12 mx-auto mb-4 text-gray-300" />
               <p>Nenhum exame encontrado para este paciente</p>
               <a 
-                href={`/exames/novo?paciente=${paciente.id}`}
+                href={`/pages/exames/novo?paciente=${paciente.id}`}
                 className="text-blue-600 hover:underline mt-2 inline-block"
               >
                 Cadastrar primeiro exame

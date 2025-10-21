@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import AppLayout from '../../components/AppLayout'
+import AppLayout from '../../../components/AppLayout'
 import { ArrowLeft, Save, TestTube, User } from 'lucide-react'
 
 interface Paciente {
@@ -133,7 +133,7 @@ export default function NovoExamePage() {
                 </div>
                 {pacientes.length === 0 && (
                   <p className="text-sm text-gray-500 mt-2">
-                    Nenhum paciente cadastrado. <a href="/pacientes/novo" className="text-blue-600 hover:underline">Cadastrar paciente</a>
+                    Nenhum paciente cadastrado. <a href="/pages/pacientes/novo" className="text-blue-600 hover:underline">Cadastrar paciente</a>
                   </p>
                 )}
               </div>
