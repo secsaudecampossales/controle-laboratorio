@@ -1,6 +1,7 @@
 import AppLayout from '../../components/AppLayout'
 import Link from 'next/link'
 import { Plus, Search, Edit, Trash2, Eye } from 'lucide-react'
+import { prisma } from '@/app/lib/prisma'
 
 type Paciente = {
   id: string
@@ -12,19 +13,30 @@ type Paciente = {
 
 async function getPacientes() {
   try {
-    // Build an absolute URL for server-side fetch environments.
-    // Prefer NEXT_PUBLIC_BASE_URL if set; otherwise use localhost for dev.
-    const base = process.env.NEXT_PUBLIC_BASE_URL || (process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : 'http://localhost:3000')
-    const url = new URL('/api/pacientes', base).toString()
-    const response = await fetch(url, { cache: 'no-store' })
+    // Query DB directly from server component to avoid URL parsing issues
+    // and to keep the page rendering deterministic on the server.
+    const pacientes = await prisma.paciente.findMany({
+      include: {
+        exames: {
+          orderBy: { dataExame: 'desc' },
+          take: 1,
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    })
 
-    if (!response.ok) {
-      throw new Error('Erro ao buscar pacientes')
-    }
+    // Convert Date fields to strings for safe serialization in the server
+    const serialized = pacientes.map((p) => ({
+      id: p.id,
+      nome: p.nome,
+      cpf: p.cpf,
+      telefone: p.telefone,
+      exames: p.exames?.map((e) => ({ dataExame: e.dataExame.toISOString() })) || [],
+    }))
 
-    return await response.json()
+    return serialized
   } catch (error) {
-    console.error('Erro ao buscar pacientes:', error)
+    console.error('Erro ao buscar pacientes via Prisma:', error)
     return []
   }
 }
