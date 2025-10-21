@@ -71,7 +71,7 @@ export default function NovoExamePage() {
       })
 
       if (response.ok) {
-        router.push('/exames')
+        router.push('/pages/exames')
         router.refresh()
       } else {
         const error = await response.json()
