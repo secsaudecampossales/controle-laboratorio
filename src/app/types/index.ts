@@ -41,7 +41,7 @@ export interface RelatorioMensal {
   examesPorStatus: Record<StatusExame, number>
 }
 
-export const TIPOS_EXAME_LABELS: Partial<Record<TipoExame, string>> = {
+export const TIPOS_EXAME_LABELS: Record<string, string> = {
   BETA_HCG: 'Beta HCG',
   DENGUE: 'Dengue',
   CHIKUNGUNYA: 'Chikungunya',
