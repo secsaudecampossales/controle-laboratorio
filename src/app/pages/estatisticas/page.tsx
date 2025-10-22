@@ -167,7 +167,7 @@ export default function EstatisticasPage() {
           {/* Exames por mês */}
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              Exames por Mês (2024)
+              Exames por Mês (2025)
             </h2>
             <div className="h-64 flex items-end justify-between space-x-2">
               {estatisticas.examesPorMes.map((item, index) => (
