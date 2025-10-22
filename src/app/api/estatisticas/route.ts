@@ -8,7 +8,7 @@ export async function GET() {
     let estatisticas
     try {
       // Importação dinâmica para evitar erros de build
-      const prismaModule = await import('@/app/lib/prisma').catch(() => null)
+      const prismaModule = await import('@/lib/prisma').catch(() => null)
       
       if (prismaModule?.prisma) {
         console.log('Tentando usar Prisma para buscar estatísticas...')

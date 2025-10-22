@@ -80,7 +80,7 @@ export default function ExamesPageClient() {
               Gerenciar todos os exames realizados no laboratório
             </p>
           </div>
-          <Link href="/pages/exames/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+          <Link href="/exames/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
             <Plus className="h-5 w-5 mr-2" />
             Novo Exame
           </Link>
@@ -201,7 +201,7 @@ export default function ExamesPageClient() {
                           onStatusChange={(newStatus) => handleStatusChange(exame.id, newStatus)}
                         />
                         <Link 
-                          href={`/pages/exames/${exame.id}`} 
+                          href={`/exames/${exame.id}`} 
                           className="p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors duration-200"
                           title="Ver detalhes"
                         >

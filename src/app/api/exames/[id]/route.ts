@@ -24,7 +24,7 @@ export async function PUT(request: Request) {
     const { resultado, observacoes, status, dataResultado } = body as UpdateExameData
 
     // Require Prisma to be present in runtime; fail loudly if not.
-    const prismaModule = await import('@/app/lib/prisma').catch(() => null)
+    const prismaModule = await import('@/lib/prisma').catch(() => null)
     if (!prismaModule?.prisma) {
       console.error('Prisma client not available for updating exame')
       return NextResponse.json(
@@ -64,7 +64,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'ID do exame é obrigatório' }, { status: 400 })
     }
 
-    const prismaModule = await import('@/app/lib/prisma').catch(() => null)
+    const prismaModule = await import('@/lib/prisma').catch(() => null)
     if (!prismaModule?.prisma) {
       console.error('Prisma client not available for deleting exame')
       return NextResponse.json(

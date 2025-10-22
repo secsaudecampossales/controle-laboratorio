@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/app/lib/prisma'
+import { prisma } from '@/lib/prisma'
 
 export async function GET() {
   try {
     // Import prisma dynamically but fail loudly if missing in runtime
-    const prismaModule = await import('@/app/lib/prisma').catch(() => null)
+    const prismaModule = await import('@/lib/prisma').catch(() => null)
     if (!prismaModule?.prisma) {
       console.error('Prisma client is not available. Ensure DATABASE_URL is set in the environment.')
       return NextResponse.json(

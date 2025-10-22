@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     // Use Prisma; fail loudly if not available
     let relatorioData
     try {
-      const prismaModule = await import('@/app/lib/prisma').catch(() => null)
+      const prismaModule = await import('@/lib/prisma').catch(() => null)
       
       if (prismaModule?.prisma) {
         console.log('Tentando usar Prisma para buscar relatório...')

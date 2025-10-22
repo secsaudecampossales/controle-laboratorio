@@ -14,7 +14,7 @@ async function getPacientes() {
   try {
     // Prefer using Prisma directly on the server for deterministic rendering.
     // Import prisma dynamically but fail loudly if it's not available in the runtime.
-    const prismaModule = await import('@/app/lib/prisma').catch(() => null)
+    const prismaModule = await import('../../lib/prisma').catch(() => null)
 
     if (prismaModule?.prisma) {
       const pacientes = await prismaModule.prisma.paciente.findMany({
@@ -61,7 +61,7 @@ export default async function PacientesPage() {
               Gerenciar cadastro de pacientes do laboratório
             </p>
           </div>
-          <Link href="/pages/pacientes/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+          <Link href="/pacientes/novo" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
             <Plus className="h-5 w-5 mr-2" />
             Novo Paciente
           </Link>
@@ -147,7 +147,7 @@ export default async function PacientesPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
-                        <Link href={`/pages/pacientes/${paciente.id}`} className="text-blue-600 hover:text-blue-900">
+                        <Link href={`/pacientes/${paciente.id}`} className="text-blue-600 hover:text-blue-900">
                           <Eye className="h-4 w-4" />
                         </Link>
                         <button className="text-gray-600 hover:text-gray-900">
