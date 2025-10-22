@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Paciente {
@@ -29,6 +30,7 @@ model Paciente {
 model Exame {
   id          String   @id @default(cuid())
   tipo        TipoExame
+  tipoCustom  String?
   resultado   String?
   observacoes String?
   dataExame   DateTime @default(now())
@@ -53,6 +55,7 @@ enum TipoExame {
   INGRAM
   CHAGAS
   BACILOSCOPIA_ESCARRO
+  OUTROS
 }
 
 enum StatusExame {
