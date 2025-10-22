@@ -119,14 +119,22 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { tipo, tipoCustom, pacienteId, observacoes } = body
 
+    // Build the data object dynamically to avoid TypeScript complaining
+    // about object literals containing properties not present in Prisma's strict union types.
+    const data: any = {
+      tipo,
+      pacienteId,
+      observacoes,
+      dataExame: new Date(),
+    }
+
+    if (tipo === 'OUTROS') {
+      // Only add tipoCustom when the type is OUTROS
+      data.tipoCustom = tipoCustom ?? null
+    }
+
     const exame = await prisma.exame.create({
-      data: {
-        tipo,
-        tipoCustom: tipo === 'OUTROS' ? tipoCustom : null,
-        pacienteId,
-        observacoes,
-        dataExame: new Date()
-      },
+      data: data as Prisma.ExameCreateInput,
       include: {
         paciente: true
       }
