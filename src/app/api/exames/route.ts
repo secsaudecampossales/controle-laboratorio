@@ -119,25 +119,22 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { tipo, tipoCustom, pacienteId, observacoes } = body
 
-    // Build the data object using the unchecked create input so we can
-    // set the foreign key `pacienteId` directly and conditionally include
-    // `tipoCustom` without triggering an object-literal excess property check.
-    const data: Prisma.ExameUncheckedCreateInput = {
+    // Build the create payload as a plain object. We cast via `unknown` ->
+    // `Prisma.ExameCreateInput` to avoid TS excess-property checks while
+    // keeping types explicit at the call site.
+    const createPayload = {
       tipo: tipo as TipoExame,
       pacienteId,
       observacoes,
       dataExame: new Date(),
-    }
-
-    if (tipo === 'OUTROS') {
-      data.tipoCustom = tipoCustom ?? null
+      ...(tipo === 'OUTROS' ? { tipoCustom: tipoCustom ?? null } : {}),
     }
 
     const exame = await prisma.exame.create({
-      data,
+      data: createPayload as unknown as Prisma.ExameCreateInput,
       include: {
-        paciente: true
-      }
+        paciente: true,
+      },
     })
 
     return NextResponse.json(exame, { status: 201 })
