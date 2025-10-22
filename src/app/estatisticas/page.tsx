@@ -81,24 +81,24 @@ export default function EstatisticasPage() {
 
   return (
     <AppLayout>
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Estatísticas</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Estatísticas</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-2">
             Análise detalhada dos dados do laboratório
           </p>
         </div>
 
         {/* Cards de métricas principais */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center">
               <div className="p-2 bg-blue-100 rounded-lg">
-                <BarChart3 className="h-6 w-6 text-blue-600" />
+                <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total de Exames</p>
-                <p className="text-2xl font-bold text-gray-900">{estatisticas.totalExames.toLocaleString()}</p>
+              <div className="ml-3 sm:ml-4">
+                <p className="text-xs sm:text-sm font-medium text-gray-600">Total de Exames</p>
+                <p className="text-xl sm:text-2xl font-bold text-gray-900">{estatisticas.totalExames.toLocaleString()}</p>
                 <p className={`text-xs flex items-center ${
                   estatisticas.tendencias.exames.tipo === 'crescimento' ? 'text-green-600' : 'text-red-600'
                 }`}>
@@ -109,14 +109,14 @@ export default function EstatisticasPage() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center">
               <div className="p-2 bg-green-100 rounded-lg">
-                <Activity className="h-6 w-6 text-green-600" />
+                <Activity className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Taxa de Positividade</p>
-                <p className="text-2xl font-bold text-gray-900">{estatisticas.taxaPositividade}%</p>
+              <div className="ml-3 sm:ml-4">
+                <p className="text-xs sm:text-sm font-medium text-gray-600">Taxa de Positividade</p>
+                <p className="text-xl sm:text-2xl font-bold text-gray-900">{estatisticas.taxaPositividade}%</p>
                 <p className={`text-xs flex items-center ${
                   estatisticas.tendencias.positividade.tipo === 'diminuicao' ? 'text-green-600' : 'text-red-600'
                 }`}>
@@ -127,14 +127,14 @@ export default function EstatisticasPage() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center">
               <div className="p-2 bg-yellow-100 rounded-lg">
-                <PieChart className="h-6 w-6 text-yellow-600" />
+                <PieChart className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Tempo Médio</p>
-                <p className="text-2xl font-bold text-gray-900">{estatisticas.tempoMedioProcessamento} dias</p>
+              <div className="ml-3 sm:ml-4">
+                <p className="text-xs sm:text-sm font-medium text-gray-600">Tempo Médio</p>
+                <p className="text-xl sm:text-2xl font-bold text-gray-900">{estatisticas.tempoMedioProcessamento} dias</p>
                 <p className={`text-xs flex items-center ${
                   estatisticas.tendencias.tempo.tipo === 'aumento' ? 'text-red-600' : 'text-green-600'
                 }`}>
@@ -145,14 +145,14 @@ export default function EstatisticasPage() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center">
               <div className="p-2 bg-purple-100 rounded-lg">
-                <TrendingUp className="h-6 w-6 text-purple-600" />
+                <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Crescimento</p>
-                <p className="text-2xl font-bold text-gray-900">+{estatisticas.crescimentoAnual}%</p>
+              <div className="ml-3 sm:ml-4">
+                <p className="text-xs sm:text-sm font-medium text-gray-600">Crescimento</p>
+                <p className="text-xl sm:text-2xl font-bold text-gray-900">+{estatisticas.crescimentoAnual}%</p>
                 <p className="text-xs text-green-600 flex items-center">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   vs. ano anterior
@@ -165,22 +165,30 @@ export default function EstatisticasPage() {
         {/* Gráficos principais */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Exames por mês */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
               Exames por Mês (2025)
             </h2>
-            <div className="h-64 flex items-end justify-between space-x-2">
-              {estatisticas.examesPorMes.map((item, index) => (
-                <div key={index} className="flex flex-col items-center">
-                  <div 
-                    className="bg-blue-500 rounded-t w-8 mb-2"
-                    style={{ height: `${(item.quantidade / Math.max(...estatisticas.examesPorMes.map(m => m.quantidade))) * 200}px` }}
-                  ></div>
-                  <span className="text-xs text-gray-600">
-                    {item.mes}
-                  </span>
-                </div>
-              ))}
+            <div className="h-48 sm:h-64 flex items-end justify-between space-x-1 sm:space-x-2 px-2">
+              {estatisticas.examesPorMes.map((item, index) => {
+                const maxValue = Math.max(...estatisticas.examesPorMes.map(m => m.quantidade))
+                const barHeight = maxValue > 0 ? (item.quantidade / maxValue) * 180 : 0
+                return (
+                  <div key={index} className="flex flex-col items-center flex-1">
+                    <div 
+                      className="bg-gradient-to-t from-blue-500 to-blue-400 rounded-t w-full max-w-8 sm:max-w-12 mb-2 min-h-[4px]"
+                      style={{ height: `${Math.max(barHeight, 4)}px` }}
+                      title={`${item.quantidade} exames`}
+                    ></div>
+                    <span className="text-xs text-gray-600 text-center break-words">
+                      {item.mes}
+                    </span>
+                    <span className="text-xs text-gray-500 mt-1 font-medium">
+                      {item.quantidade}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
           </div>
 
