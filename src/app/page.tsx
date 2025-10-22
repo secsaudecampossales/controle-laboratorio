@@ -7,6 +7,7 @@ import {
   TrendingUp,
   AlertCircle
 } from 'lucide-react'
+import { prisma } from '@/app/lib/prisma'
 
 type RecentExame = {
   id: string
@@ -19,17 +20,45 @@ type RecentExame = {
 
 async function getEstatisticas() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/estatisticas`, {
-      cache: 'no-store'
-    })
-    
-    if (!response.ok) {
-      throw new Error('Erro ao buscar estatísticas')
+    // Query database directly from server component for up-to-date stats
+    const hoje = new Date()
+    hoje.setHours(0, 0, 0, 0)
+    const amanha = new Date(hoje)
+    amanha.setDate(amanha.getDate() + 1)
+
+    const inicioMes = new Date()
+    inicioMes.setDate(1)
+    inicioMes.setHours(0, 0, 0, 0)
+
+    const [examesHoje, totalPacientes, examesPendentes, examesEsteMes, examesRecentes] = await Promise.all([
+      prisma.exame.count({ where: { dataExame: { gte: hoje, lt: amanha } } }),
+      prisma.paciente.count(),
+      prisma.exame.count({ where: { status: 'PENDENTE' } }),
+      prisma.exame.count({ where: { dataExame: { gte: inicioMes } } }),
+      prisma.exame.findMany({
+        take: 5,
+        orderBy: { dataExame: 'desc' },
+        include: { paciente: true }
+      })
+    ])
+
+    // Serialize recent exames to the shape expected by the UI
+    const examesRecentesSerialized = examesRecentes.map((e) => ({
+      id: e.id,
+      tipo: String(e.tipo),
+      status: String(e.status),
+      paciente: { nome: e.paciente?.nome || '—' }
+    }))
+
+    return {
+      examesHoje,
+      totalPacientes,
+      examesPendentes,
+      examesEsteMes,
+      examesRecentes: examesRecentesSerialized
     }
-    
-    return await response.json()
   } catch (error) {
-    console.error('Erro ao buscar estatísticas:', error)
+    console.error('Erro ao buscar estatísticas via Prisma:', error)
     return {
       examesHoje: 0,
       totalPacientes: 0,
