@@ -1,7 +1,6 @@
 import AppLayout from '../../components/AppLayout'
 import Link from 'next/link'
 import { Plus, Search, Edit, Trash2, Eye } from 'lucide-react'
-import { prisma } from '@/app/lib/prisma'
 
 type Paciente = {
   id: string
@@ -14,9 +13,7 @@ type Paciente = {
 async function getPacientes() {
   try {
     // Prefer using Prisma directly on the server for deterministic rendering.
-    // But in some deploy environments the Prisma client or DATABASE_URL
-    // may not be available at runtime (serverless). Try a dynamic import
-    // and fall back to calling the internal API route using an absolute URL.
+    // Import prisma dynamically but fail loudly if it's not available in the runtime.
     const prismaModule = await import('@/app/lib/prisma').catch(() => null)
 
     if (prismaModule?.prisma) {
@@ -42,17 +39,13 @@ async function getPacientes() {
       return serialized
     }
 
-    // Fallback: fetch the internal API route using an absolute URL. On Vercel
-    // the VERCEL_URL env var is available; otherwise default to localhost.
-    const baseHost = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${process.env.PORT ?? 3000}`
-    const apiUrl = new URL('/api/pacientes', baseHost).toString()
-    const res = await fetch(apiUrl)
-    if (!res.ok) return []
-    const data = await res.json()
-    return data
+    // If Prisma is not available in this environment, fail loudly so the
+    // deployment surfaces the configuration issue (DATABASE_URL missing/mis
+    // configured) instead of silently returning empty data.
+    throw new Error('Prisma client not available. Ensure DATABASE_URL is configured in the deployment environment.')
   } catch (error) {
     console.error('Erro ao buscar pacientes via Prisma:', error)
-    return []
+    throw error
   }
 }
 

@@ -3,7 +3,17 @@ import { prisma } from '@/app/lib/prisma'
 
 export async function GET() {
   try {
-    const pacientes = await prisma.paciente.findMany({
+    // Import prisma dynamically but fail loudly if missing in runtime
+    const prismaModule = await import('@/app/lib/prisma').catch(() => null)
+    if (!prismaModule?.prisma) {
+      console.error('Prisma client is not available. Ensure DATABASE_URL is set in the environment.')
+      return NextResponse.json(
+        { error: 'Prisma client not available. Configure DATABASE_URL in the environment.' },
+        { status: 500 }
+      )
+    }
+
+    const pacientes = await prismaModule.prisma.paciente.findMany({
       include: {
         exames: {
           orderBy: {

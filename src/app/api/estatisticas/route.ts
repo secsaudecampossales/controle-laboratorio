@@ -1,71 +1,5 @@
 import { NextResponse } from 'next/server'
 
-// Função para gerar estatísticas com fallback
-async function getEstatisticasFallback() {
-  console.log('Gerando estatísticas com fallback')
-  
-  // Simular dados de exemplo para teste
-  return {
-    // Métricas principais
-    totalExames: 1247,
-    examesHoje: 23,
-    examesPendentes: 45,
-    examesProcessando: 12,
-    examesConcluidos: 1190,
-    totalPacientes: 892,
-    
-    // Estatísticas por tipo
-    examesPorTipo: [
-      { tipo: 'BETA_HCG', quantidade: 348, positivos: 89, percentual: 28.0 },
-      { tipo: 'COVID', quantidade: 299, positivos: 63, percentual: 24.0 },
-      { tipo: 'DENGUE', quantidade: 199, positivos: 24, percentual: 16.0 },
-      { tipo: 'CHIKUNGUNYA', quantidade: 149, positivos: 18, percentual: 12.0 },
-      { tipo: 'ZIKA', quantidade: 125, positivos: 8, percentual: 10.0 },
-      { tipo: 'PPD', quantidade: 87, positivos: 12, percentual: 7.0 },
-      { tipo: 'INGRAM', quantidade: 45, positivos: 3, percentual: 3.6 },
-      { tipo: 'CHAGAS', quantidade: 25, positivos: 2, percentual: 2.0 },
-      { tipo: 'BACILOSCOPIA_ESCARRO', quantidade: 20, positivos: 1, percentual: 1.6 }
-    ],
-    
-    // Estatísticas por status
-    examesPorStatus: [
-      { status: 'CONCLUIDO', quantidade: 1190, percentual: 95.4 },
-      { status: 'PENDENTE', quantidade: 45, percentual: 3.6 },
-      { status: 'PROCESSANDO', quantidade: 12, percentual: 1.0 },
-      { status: 'CANCELADO', quantidade: 0, percentual: 0.0 }
-    ],
-    
-    // Exames por mês (últimos 12 meses)
-    examesPorMes: [
-      { mes: 'Jan', quantidade: 120 },
-      { mes: 'Fev', quantidade: 135 },
-      { mes: 'Mar', quantidade: 128 },
-      { mes: 'Abr', quantidade: 142 },
-      { mes: 'Mai', quantidade: 156 },
-      { mes: 'Jun', quantidade: 148 },
-      { mes: 'Jul', quantidade: 132 },
-      { mes: 'Ago', quantidade: 145 },
-      { mes: 'Set', quantidade: 138 },
-      { mes: 'Out', quantidade: 142 },
-      { mes: 'Nov', quantidade: 156 },
-      { mes: 'Dez', quantidade: 165 }
-    ],
-    
-    // Métricas calculadas
-    taxaPositividade: 18.5,
-    tempoMedioProcessamento: 2.3,
-    crescimentoAnual: 15.0,
-    
-    // Tendências
-    tendencias: {
-      exames: { valor: 12, tipo: 'crescimento' },
-      positividade: { valor: -2.1, tipo: 'diminuicao' },
-      tempo: { valor: 0.2, tipo: 'aumento' },
-      crescimento: { valor: 15, tipo: 'crescimento' }
-    }
-  }
-}
-
 export async function GET() {
   try {
     console.log('Buscando estatísticas...')
@@ -249,14 +183,18 @@ export async function GET() {
         
         console.log('Estatísticas encontradas com Prisma:', estatisticas.totalExames)
       } else {
-        throw new Error('Prisma não disponível')
+        console.error('Prisma client not available for estatisticas')
+        return NextResponse.json(
+          { error: 'Prisma client not available. Configure DATABASE_URL in the environment.' },
+          { status: 500 }
+        )
       }
     } catch (prismaError) {
-      console.error('Erro com Prisma, usando fallback:', prismaError)
-      
-      // Fallback para estatísticas simuladas
-      estatisticas = await getEstatisticasFallback()
-      console.log('Estatísticas geradas com fallback:', estatisticas.totalExames)
+      console.error('Erro ao calcular estatísticas com Prisma:', prismaError)
+      return NextResponse.json(
+        { error: 'Erro ao calcular estatísticas', details: prismaError instanceof Error ? prismaError.message : String(prismaError) },
+        { status: 500 }
+      )
     }
 
     return NextResponse.json(estatisticas)

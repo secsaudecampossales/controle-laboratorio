@@ -1,46 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// Função para buscar dados de relatório sem Prisma (fallback)
-async function getRelatorioDirect(mes: number, ano: number) {
-  console.log('Gerando relatório direto (fallback):', { mes, ano })
-  
-  // Simular dados de exemplo para o mês/ano selecionado
-  const examesPorTipo = [
-    { tipo: 'BETA_HCG', quantidade: 45, percentual: 25.0 },
-    { tipo: 'COVID', quantidade: 35, percentual: 19.4 },
-    { tipo: 'DENGUE', quantidade: 30, percentual: 16.7 },
-    { tipo: 'CHIKUNGUNYA', quantidade: 25, percentual: 13.9 },
-    { tipo: 'ZIKA', quantidade: 20, percentual: 11.1 },
-    { tipo: 'PPD', quantidade: 15, percentual: 8.3 },
-    { tipo: 'INGRAM', quantidade: 10, percentual: 5.6 }
-  ]
-  
-  const examesPorStatus = [
-    { status: 'CONCLUIDO', quantidade: 120, percentual: 66.7 },
-    { status: 'PROCESSANDO', quantidade: 35, percentual: 19.4 },
-    { status: 'PENDENTE', quantidade: 20, percentual: 11.1 },
-    { status: 'CANCELADO', quantidade: 5, percentual: 2.8 }
-  ]
-  
-  const examesPorSemana = [
-    { semana: 'Semana 1', quantidade: 45 },
-    { semana: 'Semana 2', quantidade: 50 },
-    { semana: 'Semana 3', quantidade: 42 },
-    { semana: 'Semana 4', quantidade: 43 }
-  ]
-  
-  const totalExames = examesPorTipo.reduce((sum, item) => sum + item.quantidade, 0)
-  
-  return {
-    mes: mes.toString().padStart(2, '0'),
-    ano,
-    totalExames,
-    examesPorTipo,
-    examesPorStatus,
-    examesPorSemana
-  }
-}
-
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
@@ -64,10 +23,9 @@ export async function GET(request: NextRequest) {
       )
     }
     
-    // Tentar usar Prisma primeiro, mas com fallback robusto
+    // Use Prisma; fail loudly if not available
     let relatorioData
     try {
-      // Importação dinâmica para evitar erros de build
       const prismaModule = await import('@/app/lib/prisma').catch(() => null)
       
       if (prismaModule?.prisma) {
@@ -139,21 +97,25 @@ export async function GET(request: NextRequest) {
           totalExames,
           examesPorTipo,
           examesPorStatus,
-          examesPorSemana
+          examesPorSemana,
         }
-        
+
         console.log('Relatório gerado com Prisma:', relatorioData)
       } else {
-        throw new Error('Prisma não disponível')
+        console.error('Prisma client not available for relatorios')
+        return NextResponse.json(
+          { error: 'Prisma client not available. Configure DATABASE_URL in the environment.' },
+          { status: 500 }
+        )
       }
     } catch (prismaError) {
-      console.error('Erro com Prisma, usando fallback:', prismaError)
-      
-      // Fallback para dados diretos
-      relatorioData = await getRelatorioDirect(mes, ano)
-      console.log('Relatório gerado com fallback:', relatorioData)
+      console.error('Erro ao gerar relatório com Prisma:', prismaError)
+      return NextResponse.json(
+        { error: 'Erro ao gerar relatório', details: prismaError instanceof Error ? prismaError.message : String(prismaError) },
+        { status: 500 }
+      )
     }
-    
+
     return NextResponse.json(relatorioData)
   } catch (error) {
     console.error('Erro geral ao gerar relatório:', error)
