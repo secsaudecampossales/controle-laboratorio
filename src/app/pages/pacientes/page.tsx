@@ -13,28 +13,43 @@ type Paciente = {
 
 async function getPacientes() {
   try {
-    // Query DB directly from server component to avoid URL parsing issues
-    // and to keep the page rendering deterministic on the server.
-    const pacientes = await prisma.paciente.findMany({
-      include: {
-        exames: {
-          orderBy: { dataExame: 'desc' },
-          take: 1,
+    // Prefer using Prisma directly on the server for deterministic rendering.
+    // But in some deploy environments the Prisma client or DATABASE_URL
+    // may not be available at runtime (serverless). Try a dynamic import
+    // and fall back to calling the internal API route using an absolute URL.
+    const prismaModule = await import('@/app/lib/prisma').catch(() => null)
+
+    if (prismaModule?.prisma) {
+      const pacientes = await prismaModule.prisma.paciente.findMany({
+        include: {
+          exames: {
+            orderBy: { dataExame: 'desc' },
+            take: 1,
+          },
         },
-      },
-      orderBy: { createdAt: 'desc' },
-    })
+        orderBy: { createdAt: 'desc' },
+      })
 
-    // Convert Date fields to strings for safe serialization in the server
-    const serialized = pacientes.map((p) => ({
-      id: p.id,
-      nome: p.nome,
-      cpf: p.cpf,
-      telefone: p.telefone,
-      exames: p.exames?.map((e) => ({ dataExame: e.dataExame.toISOString() })) || [],
-    }))
+      // Convert Date fields to strings for safe serialization in the server
+      const serialized = pacientes.map((p) => ({
+        id: p.id,
+        nome: p.nome,
+        cpf: p.cpf,
+        telefone: p.telefone,
+        exames: p.exames?.map((e) => ({ dataExame: e.dataExame.toISOString() })) || [],
+      }))
 
-    return serialized
+      return serialized
+    }
+
+    // Fallback: fetch the internal API route using an absolute URL. On Vercel
+    // the VERCEL_URL env var is available; otherwise default to localhost.
+    const baseHost = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${process.env.PORT ?? 3000}`
+    const apiUrl = new URL('/api/pacientes', baseHost).toString()
+    const res = await fetch(apiUrl)
+    if (!res.ok) return []
+    const data = await res.json()
+    return data
   } catch (error) {
     console.error('Erro ao buscar pacientes via Prisma:', error)
     return []
