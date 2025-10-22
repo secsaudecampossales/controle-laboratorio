@@ -117,11 +117,12 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { tipo, pacienteId, observacoes } = body
+    const { tipo, tipoCustom, pacienteId, observacoes } = body
 
     const exame = await prisma.exame.create({
       data: {
         tipo,
+        tipoCustom: tipo === 'OUTROS' ? tipoCustom : null,
         pacienteId,
         observacoes,
         dataExame: new Date()

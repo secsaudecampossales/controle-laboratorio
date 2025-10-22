@@ -8,6 +8,7 @@ import { ArrowLeft, Save, TestTube, User, Calendar, CheckCircle, Clock, AlertCir
 interface Exame {
   id: string
   tipo: string
+  tipoCustom?: string | null
   resultado: string | null
   observacoes: string | null
   dataExame: string
@@ -204,7 +205,10 @@ export default function ExameDetalhesPage() {
               <TestTube className="h-5 w-5 text-gray-400" />
               <div>
                 <p className="text-sm font-medium text-gray-600">Tipo de Exame</p>
-                <p className="text-lg font-semibold text-gray-900">{exame.tipo.replace('_', ' ')}</p>
+                <p className="text-lg font-semibold text-gray-900">{exame.tipo === 'OUTROS' ? 'Outros' : exame.tipo.replace('_', ' ')}</p>
+                {exame.tipo === 'OUTROS' && exame.tipoCustom && (
+                  <p className="text-sm text-gray-500">{exame.tipoCustom}</p>
+                )}
               </div>
             </div>
 

@@ -17,6 +17,7 @@ export interface Paciente {
 export interface Exame {
   id: string
   tipo: TipoExame
+  tipoCustom?: string
   resultado?: string
   observacoes?: string
   dataExame: Date
@@ -49,7 +50,8 @@ export const TIPOS_EXAME_LABELS: Record<TipoExame, string> = {
   PPD: 'PPD',
   INGRAM: 'Ingram',
   CHAGAS: 'Chagas',
-  BACILOSCOPIA_ESCARRO: 'Baciloscopia de Escarro'
+  BACILOSCOPIA_ESCARRO: 'Baciloscopia de Escarro',
+  OUTROS: 'Outros'
 }
 
 export const STATUS_EXAME_LABELS: Record<StatusExame, string> = {

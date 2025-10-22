@@ -22,6 +22,7 @@ const TIPOS_EXAME = [
   { value: 'INGRAM', label: 'Ingram' },
   { value: 'CHAGAS', label: 'Chagas' },
   { value: 'BACILOSCOPIA_ESCARRO', label: 'Baciloscopia de Escarro' }
+  ,{ value: 'OUTROS', label: 'Outros' }
 ]
 
 export default function NovoExamePage() {
@@ -30,6 +31,7 @@ export default function NovoExamePage() {
   const [pacientes, setPacientes] = useState<Paciente[]>([])
   const [formData, setFormData] = useState({
     tipo: '',
+    tipoCustom: '',
     pacienteId: '',
     observacoes: ''
   })
@@ -163,6 +165,24 @@ export default function NovoExamePage() {
                   </select>
                 </div>
               </div>
+
+              {/* Campo para tipo custom quando "Outros" for selecionado */}
+              {formData.tipo === 'OUTROS' && (
+                <div className="md:col-span-2">
+                  <label htmlFor="tipoCustom" className="block text-sm font-medium text-gray-700 mb-2">
+                    Descreva o exame (Outros) *
+                  </label>
+                  <input
+                    id="tipoCustom"
+                    name="tipoCustom"
+                    required
+                    value={formData.tipoCustom}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Digite o nome do exame"
+                  />
+                </div>
+              )}
 
               {/* Observações */}
               <div className="md:col-span-2">
