@@ -40,7 +40,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { nome, cpf, rg, telefone, endereco, nascimento } = body
+    const { nome, cpf, rg, telefone, endereco, nascimento, numeroSus } = body
 
     const paciente = await prisma.paciente.create({
       data: {
@@ -49,13 +49,51 @@ export async function POST(request: NextRequest) {
         rg,
         telefone,
         endereco,
-        nascimento: nascimento ? new Date(nascimento) : null
+        nascimento: nascimento ? new Date(nascimento) : null,
+        numeroSus
       }
     })
 
     return NextResponse.json(paciente, { status: 201 })
   } catch (error) {
     console.error('Erro ao criar paciente:', error)
+    return NextResponse.json(
+      { error: 'Erro interno do servidor' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get('id')
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID do paciente é obrigatório' }, { status: 400 })
+    }
+
+    // Verificar se o paciente existe
+    const paciente = await prisma.paciente.findUnique({
+      where: { id },
+      include: { exames: true }
+    })
+
+    if (!paciente) {
+      return NextResponse.json({ error: 'Paciente não encontrado' }, { status: 404 })
+    }
+
+    // Excluir o paciente (os exames serão excluídos automaticamente devido ao onDelete: Cascade)
+    await prisma.paciente.delete({
+      where: { id }
+    })
+
+    return NextResponse.json({ 
+      message: 'Paciente e exames associados excluídos com sucesso',
+      examesExcluidos: paciente.exames.length
+    })
+  } catch (error) {
+    console.error('Erro ao excluir paciente:', error)
     return NextResponse.json(
       { error: 'Erro interno do servidor' },
       { status: 500 }
