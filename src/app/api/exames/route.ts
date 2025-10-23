@@ -8,8 +8,9 @@ export async function GET(request: NextRequest) {
     const tipo = searchParams.get('tipo')
     const status = searchParams.get('status')
     const pacienteId = searchParams.get('pacienteId')
+    const id = searchParams.get('id')
 
-    console.log('GET request recebida:', { tipo, status, pacienteId })
+    console.log('GET request recebida:', { tipo, status, pacienteId, id })
 
     // Import prisma dynamically to avoid unexpected build-time issues,
     // but fail loudly if not available in the runtime environment.
@@ -26,6 +27,7 @@ export async function GET(request: NextRequest) {
     if (tipo) where.tipo = tipo as unknown as TipoExame
     if (status) where.status = status as unknown as StatusExame
     if (pacienteId) where.pacienteId = pacienteId
+    if (id) where.id = id
 
     const exames = await prismaModule.prisma.exame.findMany({
       where,
