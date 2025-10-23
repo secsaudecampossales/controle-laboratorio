@@ -138,7 +138,7 @@ export function usePatientAuth() {
       } else {
         setState({ paciente: null, loading: false, isAuthenticated: false });
       }
-    } catch (e) {
+    } catch {
       setState({ paciente: null, loading: false, isAuthenticated: false });
     }
   };
@@ -157,7 +157,7 @@ export function usePatientAuth() {
       }
       const err = await res.json();
       return { success: false, error: err.error };
-    } catch (e) {
+    } catch {
       return { success: false, error: 'Erro de conexão' };
     }
   };

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth, usePatientAuth } from '../hooks/useAuth';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -62,7 +62,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
 // Patient portal guard
 export function PatientAuthGuard({ children }: AuthGuardProps) {
-  const { isAuthenticated, loading } = require('../hooks/useAuth').usePatientAuth();
+  const { isAuthenticated, loading } = usePatientAuth();
   const router = useRouter();
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);

@@ -16,7 +16,7 @@ export function generateToken(payload: TokenPayload): string {
 export function verifyToken(token: string): TokenPayload | null {
   try {
     return jwt.verify(token, JWT_SECRET) as TokenPayload;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -43,7 +43,7 @@ export function generatePatientToken(payload: PatientTokenPayload): string {
 export function verifyPatientToken(token: string): PatientTokenPayload | null {
   try {
     return jwt.verify(token, JWT_SECRET) as PatientTokenPayload;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

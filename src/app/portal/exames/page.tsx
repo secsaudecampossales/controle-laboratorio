@@ -34,8 +34,8 @@ export default function PortalExamesPage() {
         }
         const data = await res.json()
         setExames(data)
-      } catch (e: any) {
-        setError(e.message || 'Erro desconhecido')
+      } catch (e: unknown) {
+        setError(e instanceof Error ? e.message : 'Erro desconhecido')
       } finally {
         setLoading(false)
       }
