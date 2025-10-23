@@ -19,6 +19,7 @@ model Paciente {
   telefone  String?
   endereco  String?
   nascimento DateTime?
+  numeroSus String?  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
