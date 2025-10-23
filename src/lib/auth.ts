@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'laboratorio-campos-sales-secret-key-2024';
+const JWT_SECRET = process.env.JWT_SECRET || 'laboratorio-campos-sales-secret-key-2025';
 
 export interface TokenPayload {
   userId: string;

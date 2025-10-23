@@ -159,7 +159,7 @@ export default function PortalLoginPage() {
         {/* Footer */}
         <div className="text-center mt-6 sm:mt-8">
           <p className="text-xs sm:text-sm text-gray-500">
-            © 2024 Laboratório Campos Sales. Todos os direitos reservados.
+            © 2025 Laboratório Campos Sales. Todos os direitos reservados.
           </p>
         </div>
       </div>
