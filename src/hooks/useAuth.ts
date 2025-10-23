@@ -113,3 +113,62 @@ export function useAuth() {
     checkAuth
   };
 }
+
+// Paciente auth hook
+interface PatientAuthState {
+  paciente: { id: string; nome: string } | null;
+  loading: boolean;
+  isAuthenticated: boolean;
+}
+
+export function usePatientAuth() {
+  const [state, setState] = useState<PatientAuthState>({ paciente: null, loading: true, isAuthenticated: false });
+  const router = useRouter();
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    try {
+      const res = await fetch('/api/pacientes/auth/me');
+      if (res.ok) {
+        const data = await res.json();
+        setState({ paciente: data.paciente, loading: false, isAuthenticated: true });
+      } else {
+        setState({ paciente: null, loading: false, isAuthenticated: false });
+      }
+    } catch (e) {
+      setState({ paciente: null, loading: false, isAuthenticated: false });
+    }
+  };
+
+  const login = async (cpf: string, rg: string) => {
+    try {
+      const res = await fetch('/api/pacientes/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cpf, rg }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setState({ paciente: data.paciente, loading: false, isAuthenticated: true });
+        return { success: true };
+      }
+      const err = await res.json();
+      return { success: false, error: err.error };
+    } catch (e) {
+      return { success: false, error: 'Erro de conexão' };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await fetch('/api/pacientes/auth/logout', { method: 'POST' })
+    } catch {}
+    setState({ paciente: null, loading: false, isAuthenticated: false })
+    router.push('/portal/login')
+  }
+
+  return { ...state, login, logout, checkAuth };
+}

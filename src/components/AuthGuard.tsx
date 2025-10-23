@@ -59,3 +59,35 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
   return <>{children}</>;
 }
+
+// Patient portal guard
+export function PatientAuthGuard({ children }: AuthGuardProps) {
+  const { isAuthenticated, loading } = require('../hooks/useAuth').usePatientAuth();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    if (mounted && !loading && !isAuthenticated && pathname !== '/portal/login') {
+      router.push('/portal/login');
+    }
+  }, [isAuthenticated, loading, router, mounted, pathname]);
+
+  if (pathname === '/portal/login') {
+    return <>{children}</>;
+  }
+  if (!mounted || loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
+  if (!isAuthenticated) return null;
+  return <>{children}</>;
+}

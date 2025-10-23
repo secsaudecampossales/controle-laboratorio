@@ -28,3 +28,22 @@ export async function hashPassword(password: string): Promise<string> {
 export async function comparePassword(password: string, hashedPassword: string): Promise<boolean> {
   return bcrypt.compare(password, hashedPassword);
 }
+
+// Paciente-facing JWT helpers
+export interface PatientTokenPayload {
+  patientId: string;
+  nome: string;
+  role: 'patient';
+}
+
+export function generatePatientToken(payload: PatientTokenPayload): string {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
+}
+
+export function verifyPatientToken(token: string): PatientTokenPayload | null {
+  try {
+    return jwt.verify(token, JWT_SECRET) as PatientTokenPayload;
+  } catch (error) {
+    return null;
+  }
+}
