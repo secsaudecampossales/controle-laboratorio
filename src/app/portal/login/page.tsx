@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { usePatientAuth } from '@/hooks/useAuth'
-import { Eye, EyeOff, User, CreditCard } from 'lucide-react'
+import { Eye, EyeOff, User, CreditCard, Shield } from 'lucide-react'
 
 export default function PortalLoginPage() {
   const [cpf, setCpf] = useState('')
@@ -22,6 +22,10 @@ export default function PortalLoginPage() {
     setLoading(false)
     if (res.success) router.push('/portal/exames')
     else setError(res.error || 'Falha no login')
+  }
+
+  const handleAdminLogin = () => {
+    router.push('/login')
   }
 
   return (
@@ -146,13 +150,16 @@ export default function PortalLoginPage() {
             </button>
           </form>
 
-          {/* Credenciais de Teste */}
-          <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200">
-            <h3 className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Dados de Teste:</h3>
-            <div className="space-y-1 text-xs sm:text-sm text-gray-600">
-              <p><span className="font-medium">CPF:</span> 123.456.789-00</p>
-              <p><span className="font-medium">RG:</span> 1234567</p>
-            </div>
+          {/* Botão Administrador */}
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={handleAdminLogin}
+              className="w-full flex justify-center items-center py-2.5 sm:py-3 px-4 border border-gray-300 rounded-lg sm:rounded-xl shadow-sm text-sm sm:text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
+            >
+              <Shield className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+              Acesso Administrativo
+            </button>
           </div>
         </div>
 
