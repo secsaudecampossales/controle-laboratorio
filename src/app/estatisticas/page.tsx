@@ -176,11 +176,11 @@ export default function EstatisticasPage() {
                 return (
                   <div key={index} className="flex flex-col items-center flex-1">
                     <div 
-                      className="bg-gradient-to-t from-blue-500 to-blue-400 rounded-t w-full max-w-8 sm:max-w-12 mb-2 min-h-[4px]"
+                      className="bg-linear-to-t from-blue-500 to-blue-400 rounded-t w-full max-w-8 sm:max-w-12 mb-2 min-h-1"
                       style={{ height: `${Math.max(barHeight, 4)}px` }}
                       title={`${item.quantidade} exames`}
                     ></div>
-                    <span className="text-xs text-gray-600 text-center break-words">
+                    <span className="text-xs text-gray-600 text-center wrap-break-word">
                       {item.mes}
                     </span>
                     <span className="text-xs text-gray-500 mt-1 font-medium">
