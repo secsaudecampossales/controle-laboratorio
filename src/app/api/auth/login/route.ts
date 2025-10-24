@@ -47,7 +47,8 @@ export async function POST(request: NextRequest) {
       usuario: {
         id: usuario.id,
         nome: usuario.nome,
-        email: usuario.email
+        email: usuario.email,
+        token: token
       }
     });
 

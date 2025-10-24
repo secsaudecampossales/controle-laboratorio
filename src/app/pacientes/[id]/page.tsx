@@ -34,13 +34,13 @@ export default function PacienteDetalhesPage() {
 
   const fetchPaciente = async () => {
     try {
-      const response = await fetch(`/api/pacientes`)
+      const response = await fetch(`/api/pacientes/${params.id}`)
       if (response.ok) {
-        const pacientes = await response.json()
-        const pacienteData = pacientes.find((p: Paciente) => p.id === params.id)
-        if (pacienteData) {
-          setPaciente(pacienteData)
-        }
+        const pacienteData = await response.json()
+        setPaciente(pacienteData)
+      } else if (response.status === 404) {
+        console.error('Paciente não encontrado')
+        router.push('/pacientes')
       }
     } catch (error) {
       console.error('Erro ao buscar paciente:', error)
@@ -248,7 +248,7 @@ export default function PacienteDetalhesPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <a 
-                          href={`/pages/exames/${exame.id}`}
+                          href={`/exames/${exame.id}`}
                           className="text-blue-600 hover:text-blue-900"
                         >
                           Ver detalhes
@@ -264,7 +264,7 @@ export default function PacienteDetalhesPage() {
               <TestTube className="h-12 w-12 mx-auto mb-4 text-gray-300" />
               <p>Nenhum exame encontrado para este paciente</p>
               <a 
-                href={`/pages/exames/novo?paciente=${paciente.id}`}
+                href={`/exames/novo?paciente=${paciente.id}`}
                 className="text-blue-600 hover:underline mt-2 inline-block"
               >
                 Cadastrar primeiro exame
