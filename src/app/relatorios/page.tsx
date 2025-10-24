@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import AppLayout from '../../components/AppLayout'
 import { Download, Calendar, FileText, BarChart3, TrendingUp } from 'lucide-react'
 
@@ -36,7 +36,7 @@ export default function RelatoriosPage() {
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
   ]
 
-  const fetchRelatorio = async () => {
+  const fetchRelatorio = useCallback(async () => {
     setLoading(true)
     setError(null)
     
@@ -56,7 +56,7 @@ export default function RelatoriosPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [selectedMonth, selectedYear])
 
   const generatePDF = async () => {
     if (!relatorioData) return
@@ -105,7 +105,7 @@ export default function RelatoriosPage() {
 
   useEffect(() => {
     fetchRelatorio()
-  }, [selectedMonth, selectedYear])
+  }, [fetchRelatorio])
 
   return (
     <AppLayout>

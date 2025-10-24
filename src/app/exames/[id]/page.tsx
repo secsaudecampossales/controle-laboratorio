@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import AppLayout from '../../../components/AppLayout'
-import { ArrowLeft, Save, TestTube, User, Calendar, CheckCircle, Clock, AlertCircle, XCircle, Play, Pause } from 'lucide-react'
+import { ArrowLeft, Save, TestTube, User, Calendar, CheckCircle, Clock, XCircle, Play } from 'lucide-react'
 
 interface Exame {
   id: string
@@ -41,11 +41,7 @@ export default function ExameDetalhesPage() {
   const [showStatusModal, setShowStatusModal] = useState(false)
   const [newStatus, setNewStatus] = useState('')
 
-  useEffect(() => {
-    fetchExame()
-  }, [params.id])
-
-  const fetchExame = async () => {
+  const fetchExame = useCallback(async () => {
     try {
       const response = await fetch(`/api/exames?id=${params.id}`)
       if (response.ok) {
@@ -63,7 +59,11 @@ export default function ExameDetalhesPage() {
     } catch (error) {
       console.error('Erro ao buscar exame:', error)
     }
-  }
+  }, [params.id])
+
+  useEffect(() => {
+    fetchExame()
+  }, [fetchExame])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target

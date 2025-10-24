@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import AppLayout from '../../../components/AppLayout'
 import { ArrowLeft, Edit, User, Phone, MapPin, Calendar, TestTube } from 'lucide-react'
@@ -28,11 +28,7 @@ export default function PacienteDetalhesPage() {
   const params = useParams()
   const [paciente, setPaciente] = useState<Paciente | null>(null)
 
-  useEffect(() => {
-    fetchPaciente()
-  }, [params?.id])
-
-  const fetchPaciente = async () => {
+  const fetchPaciente = useCallback(async () => {
     try {
       const response = await fetch(`/api/pacientes/${params.id}`)
       if (response.ok) {
@@ -45,7 +41,11 @@ export default function PacienteDetalhesPage() {
     } catch (error) {
       console.error('Erro ao buscar paciente:', error)
     }
-  }
+  }, [params.id, router])
+
+  useEffect(() => {
+    fetchPaciente()
+  }, [fetchPaciente])
 
   const getStatusColor = (status: string) => {
     switch (status) {

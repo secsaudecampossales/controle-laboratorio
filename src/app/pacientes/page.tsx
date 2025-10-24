@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import AppLayout from '../../components/AppLayout'
 import Link from 'next/link'
 import { Plus, Search, Edit, Trash2, Eye, AlertTriangle } from 'lucide-react'
@@ -15,7 +14,7 @@ type Paciente = {
 }
 
 export default function PacientesPage() {
-  const router = useRouter()
+  // const router = useRouter()
   const [pacientes, setPacientes] = useState<Paciente[]>([])
   const [loading, setLoading] = useState(true)
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -57,7 +56,7 @@ export default function PacientesPage() {
       })
 
       if (response.ok) {
-        const result = await response.json()
+        await response.json()
         setPacientes(prev => prev.filter(p => p.id !== pacienteToDelete.id))
       } else {
         const error = await response.json()

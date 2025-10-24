@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import AppLayout from '../../../components/AppLayout'
 import StatusActionButtons from '../../../components/StatusActionButtons'
-import { Plus, Search, Filter, Eye, CheckCircle, Clock, AlertCircle } from 'lucide-react'
+import { Plus, Search, Eye } from 'lucide-react'
 
 interface Exame {
   id: string
@@ -56,9 +56,9 @@ export default function ExamesPageClient() {
   }
 
   // Calcular estatísticas
-  const examesPendentes = exames.filter(exame => exame.status === 'PENDENTE').length
-  const examesProcessando = exames.filter(exame => exame.status === 'PROCESSANDO').length
-  const examesConcluidos = exames.filter(exame => exame.status === 'CONCLUIDO').length
+  // const examesPendentes = exames.filter(exame => exame.status === 'PENDENTE').length
+  // const examesProcessando = exames.filter(exame => exame.status === 'PROCESSANDO').length
+  // const examesConcluidos = exames.filter(exame => exame.status === 'CONCLUIDO').length
 
   if (loading) {
     return (
